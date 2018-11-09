@@ -14,7 +14,7 @@ public abstract class DbCon {
 	
 	protected Statement st = null;
 	protected ResultSet rs = null;
-	protected PreparedStatement ps = null;
+	protected static PreparedStatement ps = null;
 	protected static Connection con = null;
 	
 
@@ -37,7 +37,7 @@ public abstract class DbCon {
 		
 	}
 	
-	public void closeCon() {
+	public static void closeCon() {
 		
 		try {
 			

@@ -13,7 +13,8 @@ public class TransactionRunnable extends DbCon {
 	public void getTotalByType() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, SQLException {
 		
 		openCon();
-	    Scanner sc = new Scanner(System.in);
+	    @SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 	    System.out.println("Please enter transaction Type:");
 	    
 	    String type = sc.nextLine();
