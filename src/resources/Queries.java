@@ -4,9 +4,7 @@ public class Queries {
 
 	public static String select = "SELECT * FROM customers WHERE creditLimit > ? and addressLine2 != ? ";
 	
-	public static String insert = "INSERT INTO customer_detail (CUST_SSN,CUST_F_NAME,CUST_M_NAME,CUST_L_NAME,CUST_CC_NO,CUST_STREET,CUST_CITY,CUST_STATE,CUST_COUNTRY,CUST_ZIP,CUST_PHONE,CUST_EMAIL,LAST_UPDATED)"
-			
-            + "VALUES (123456780, 'Nel', 'NA', 'Toms' ,'2001200220032005','2314 Valentine','Bronx','New York','USA',10458,'2038094299','nel.toms@gmail.com','2017-07-23')";
+	public static String insert = "INSERT INTO CDW_SAPP_CUSTOMER VALUES ('Jaava', 'Liisa', 'Nantis', 123456780, '2001200220032002','2314', 'Valentine','Bronx','New York','USA',10458,'2038094299','jaava.nantis@gmail.com','2017-07-23')";
 	
 	public static String update = "UPDATE customers SET country = ? WHERE customerNumber = ?";
 

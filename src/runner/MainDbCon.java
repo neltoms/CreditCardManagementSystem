@@ -15,7 +15,7 @@ public class MainDbCon {
 //		Create cre = new Create();
 //		cre.create();
 		
-		Insert ins = new Insert();
+		CRUD ins = new CRUD();
 		ins.insert();
 		
 //		Update upd = new Update();
