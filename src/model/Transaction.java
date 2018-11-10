@@ -5,7 +5,7 @@ import dao.*;
 
 public class Transaction extends DbCon {
 	
-    protected int day, month, year, ssn, branchCode, count, value;
+    protected int day, month, year, ssn, branchCode, count, value, zipcode, state, transaction;
     protected String cardNo, type;
     
     
@@ -79,8 +79,38 @@ public class Transaction extends DbCon {
 	}
 
 	public void setCount(int count) {
-	    // TODO Auto-generated method stub
 	    this.count = count;
+	    
+	    //////// ALLOW TO MODIFY ACCOUNTS
+	    
 	}
 
+	
+	
+	public void setZipcode(int zipcode) {
+	    this.zipcode = zipcode;
+	}
+
+	public int getZipcode(){
+	    return zipcode;
+	}
+	
+	public void setState(int state) {
+	    this.state = state;
+	}
+
+	public int getState(){
+	    return state;
+	}
+	
+	public void setTransaction(int transaction) {
+	    this.transaction = transaction;
+	}
+
+	public int getTransaction(){
+	    return transaction;
+	}
+
+	
+	
 }
