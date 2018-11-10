@@ -81,7 +81,7 @@ public class Transaction extends DbCon {
 	public void setCount(int count) {
 	    this.count = count;
 	    
-	    //////// ALLOW TO MODIFY ACCOUNTS
+	    // ALLOW TO MODIFY ACCOUNTS
 	    
 	}
 

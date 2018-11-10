@@ -14,7 +14,7 @@ public class CRUD extends DbCon {
 		try {
 			ps = con.prepareStatement(Queries.create);
 			System.out.println(Queries.create);
-			ps.execute();
+			ps.executeUpdate();
 			System.out.println("Table Created!");
 			
 		} catch(SQLException e) {
@@ -27,33 +27,33 @@ public class CRUD extends DbCon {
 	}	
 	
 	public void select() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Check customer's credit limit greater than...?");
-		int num = sc.nextInt();
-		System.out.println("Enter address(es) you would like to exclude?");
-		String addr = sc.next();
+//		Scanner sc = new Scanner(System.in);
+//		System.out.println("Please enter the zip code: ");
+//		int zip = sc.nextInt();
+//		System.out.println("Please enter the year in question: ");
+//		int year = sc.nextInt();
+//		System.out.println("Please enter the month in question: ");
+//		int month = sc.nextInt();
 			
 		openCon();
 		try {
-		ps = con.prepareStatement(Queries.select);
-		ps.setInt(1, num);
-		ps.setString(2, addr);
+		ps = con.prepareStatement(Queries.select1);
+//		ps.setInt(1, zip);
+//		ps.setInt(2, year);
+//		ps.setInt(3, month);
+
 		rs = ps.executeQuery();
 		System.out.println("hello");
 	
 		while(rs.next()) {
 			
-			int cnum = rs.getInt("customerNumber");
-
-			String cname = rs.getString("customerName");
-			String clname = rs.getString("contactLastName");
-			String cfname = rs.getString("contactFirstName");
-			String phone = rs.getString("phone");
+			int wyear = rs.getInt("YEAR");
+			int wmonth = rs.getInt("MONTH");
+			
+			int wzip = rs.getInt("branchZip");
 			
 			//Display values
-			System.out.print("customer number: " + cnum + ", Customer name: " + 
-			cname + ", Contact last name: " + clname + ", Contact First name: " + 
-			cfname + ", Phone " + phone + "\n" );
+			System.out.print(wzip + " " + wyear + " " + wmonth + "\r\n" );
 		} 
 				
 		} catch(SQLException e) {
@@ -62,6 +62,7 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
+			System.out.print("Query Complete!");
 		}
 		
 	}
