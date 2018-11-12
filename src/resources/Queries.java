@@ -1,23 +1,64 @@
 package resources;
 
-public class Queries {
+import dao.CRUD;
 
-	public static String select = "SELECT * FROM customers WHERE creditLimit > ? and addressLine2 != ? ";
+public class Queries {
 	
-	public static String select1 = "SELECT CDW_SAPP_CREDITCARD.TRANSACTION_ID AS 'Transaction ID', "
-			+ "B_ZIP AS 'Zip_Code',"
-			+ "CDW_SAPP_CREDITCARD.DAY AS 'Day',"
-			+ "CDW_SAPP_CREDITCARD.MONTH AS 'Month',"
-			+ "CDW_SAPP_CREDITCARD.YEAR AS 'Year'"
-			+ "FROM CDW_SAPP_CREDITCARD "
-			+ "JOIN CDW_SAPP_BRANCH ON CDW_SAPP_BRANCH.BRANCH_CODE=CDW_SAPP_CREDITCARD.BRANCH_CODE "
-			+ "WHERE B_ZIP= 95993 and CDW_SAPP_CREDITCARD.YEAR=2018 and CDW_SAPP_CREDITCARD.MONTH=3 "
+	public static String select1 = "SELECT cu.first_name as 'First Name', cu.last_name as 'Last Name', c.cust_ssn AS ssn, c.TRANSACTION_ID AS 'Transaction ID', "
+			+ "B_ZIP AS 'zip_code', "
+			+ "c.DAY AS 'Day', "
+			+ "c.MONTH AS 'Month', "
+			+ "c.YEAR AS 'Year' "
+			+ "FROM CDW_SAPP_branch "
+			+ "JOIN CDW_SAPP_creditcard c ON CDW_SAPP_BRANCH.BRANCH_CODE=c.BRANCH_CODE "
+			+ "join cdw_sapp_customer cu on cu.credit_card_no=c.credit_card_no "
+			+ "WHERE B_ZIP= ? and c.YEAR=? and c.MONTH=? "
 			+ "ORDER BY Day DESC";
 	
-	public static String insert = "INSERT INTO CDW_SAPP_CUSTOMER VALUES ('Jaava', 'Liisa', 'Nantis', 123456780, '2001200220032002','2314', 'Valentine','Bronx','New York','USA',10458,'2038094299','jaava.nantis@gmail.com','2017-07-23')";
+	public static String select2 = "SELECT CDW_SAPP_CREDITCARD.TRANSACTION_TYPE AS 'Transaction Type', "
+			+ "round(SUM(CDW_SAPP_CREDITCARD.TRANSACTION_VALUE),2) AS 'Total Value', "
+			+ "COUNT(CDW_SAPP_CREDITCARD.TRANSACTION_TYPE) AS '# of Transactions' "
+			+ "FROM CDW_SAPP_CREDITCARD "
+			+ "WHERE CDW_SAPP_CREDITCARD.TRANSACTION_TYPE= ? "
+			+ "GROUP BY (CDW_SAPP_CREDITCARD.TRANSACTION_TYPE) "
+			+ "ORDER BY 2 DESC";
 	
-	public static String update = "UPDATE customers SET country = ? WHERE customerNumber = ?";
-
+	public static String select3 = "SELECT CDW_SAPP_BRANCH.BRANCH_STATE AS 'State', "
+			+ "CDW_SAPP_BRANCH.BRANCH_CODE AS 'Branch Code',"
+			+ "SUM(CDW_SAPP_CREDITCARD.TRANSACTION_VALUE) AS 'Total Value', "
+			+ "COUNT(CDW_SAPP_CREDITCARD.TRANSACTION_TYPE) AS '# of Transactions' "
+			+ "FROM CDW_SAPP_CREDITCARD "
+			+ "JOIN CDW_SAPP_BRANCH ON CDW_SAPP_BRANCH.BRANCH_CODE=CDW_SAPP_CREDITCARD.BRANCH_CODE "
+			+ "WHERE CDW_SAPP_BRANCH.BRANCH_STATE=? "
+			+ "GROUP BY CDW_SAPP_BRANCH.BRANCH_CODE "
+			+ "ORDER BY 2 ASC";
+	
+	public static String select12 = "SELECT CDW_SAPP_CUSTOMER.LAST_NAME AS 'Last Name',\n" + 
+			"CDW_SAPP_CUSTOMER.FIRST_NAME AS 'First Name', \n" + 
+			"CDW_SAPP_CUSTOMER.MIDDLE_NAME AS 'Middle Name',\n" + 
+			"CDW_SAPP_CUSTOMER.CREDIT_CARD_NO AS 'CCN',\n" + 
+			"CDW_SAPP_CUSTOMER.APT_NO AS 'Apt',\n" + 
+			"CDW_SAPP_CUSTOMER.STREET_NAME AS 'Street',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_CITY AS 'City',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_STATE AS 'State',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_COUNTRY AS 'Country',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_ZIP AS 'Zip Code',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_PHONE AS 'Phone',\n" + 
+			"CDW_SAPP_CUSTOMER.CUST_EMAIL AS 'E-mail',\n" + 
+			"CDW_SAPP_CUSTOMER.LAST_UPDATED AS 'Last Updated'\n" + 
+			"FROM CDW_SAPP_CUSTOMER \n" + 
+			"WHERE SSN=? " + 
+			"ORDER BY 1 ASC";
+	
+	public static String selectStates = "SELECT DISTINCT BRANCH_STATE as 'state' FROM CDW_SAPP_BRANCH ";
+	
+	public static String insert = "INSERT INTO CDW_SAPP_CUSTOMER VALUES ('Jaava', 'Liisa', 'Nanits', 123456780, '2001200220032002','2314', 'Valentine','Bronx','New York','USA',10458,'2038094299','jaava.nantis@gmail.com','2017-07-23')";
+	
+	public static String update = "UPDATE cdw_sapp_customer SET " + CRUD.columnName + " = '" + CRUD.value + "' WHERE SSN = " + CRUD.ssn;
+	
+	public static String result = "SELECT * FROM cdw_sapp_customer WHERE SSN = " + CRUD.ssn;
+	
+	
 	public static String create = "DROP TABLE IF EXISTS CDW_SAPP_BRANCH; CREATE TABLE CDW_SAPP_BRANCH (\r\n" +
             "    CUST_SSN BIGINT(9),\r\n" +
             "    CUST_F_NAME VARCHAR(40),\r\n" +
