@@ -10,7 +10,7 @@ import resources.Queries;
 
 public class CRUD extends DbCon {
 	
-	public static String columnName = null;
+	public static String columnName;
 	public static String value = null;
 	public static int ssn;
 	
