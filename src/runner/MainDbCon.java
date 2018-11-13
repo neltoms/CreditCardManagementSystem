@@ -12,7 +12,7 @@ public class MainDbCon {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 		
-//		CRUD crud = new CRUD();
+		CRUD crud = new CRUD();
 //		TransactionDao trdao = new TransactionDao();
 //		CustomerRunner custrun = new CustomerRunner();
 //		TransactionRunnable trrun = new TransactionRunnable();
