@@ -10,7 +10,7 @@ public class TransactionDao extends DbCon {
 	public Transaction getTotalByType (String type) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		
 		openCon();
-		ps = con.prepareStatement(Queries.select);
+		ps = con.prepareStatement(Queries.select1);
 		ps.setString(1, type);
 		rs = ps.executeQuery();
 		Transaction t = new Transaction();
