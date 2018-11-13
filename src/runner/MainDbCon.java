@@ -114,17 +114,19 @@ public class MainDbCon {
 		
 		
 		
-//			CRUD sec = new CRUD();
-//			sec.selectTrans12();
+			CRUD sec = new CRUD();
+			sec.selectTrans24();
 //			
+//			
+		
 //			CRUD cre = new CRUD();
 //			cre.create();
 //			
 //			CRUD ins = new CRUD();
 //			ins.insert();
 //			
-			CRUD upd = new CRUD();
-			upd.update();
+//			CRUD upd = new CRUD();
+//			upd.update();
 			
 		}
 	}

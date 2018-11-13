@@ -2,6 +2,8 @@ package dao;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Scanner;
@@ -11,7 +13,7 @@ import resources.Queries;
 public class CRUD extends DbCon {
 	
 	public static String columnName;
-	public static String value = null;
+	public static String value;
 	public static int ssn;
 	
 	public void create() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
@@ -85,8 +87,8 @@ public class CRUD extends DbCon {
 				+ "4. Education \r\n"
 				+ "5. Entertainment \r\n"
 				+ "6. Gas \r\n"
-				+ "7. Grocery"
-				+ " ");
+				+ "7. Grocery");
+		
 		int response = sc.nextInt();
 		openCon();
 		
@@ -195,14 +197,14 @@ public class CRUD extends DbCon {
 		
 	}
 	
-	public void selectTrans12() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans21() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the customer's SSN : ");
 		int ssn = sc.nextInt();
 			
 		openCon();
 		try {
-		ps = con.prepareStatement(Queries.select12);
+		ps = con.prepareStatement(Queries.select21);
 		ps.setInt(1, ssn);
 
 		rs = ps.executeQuery();
@@ -240,9 +242,129 @@ public class CRUD extends DbCon {
 		}
 		
 	}
+
 	
-	
+	public void selectTrans23() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the credit card number: ");
+		String ccNum = sc.next();
+		System.out.println("Please enter the month: ");
+		int month = sc.nextInt();
+		System.out.println("Please enter the year: ");
+		int year = sc.nextInt();
+			
+		openCon();
+		try {
+		ps = con.prepareStatement(Queries.select23);
+		PreparedStatement ps2 = con.prepareStatement(Queries.showName);
+		ps.setString(1, ccNum);
+		ps.setInt(2, month);
+		ps.setInt(3, year);
+		ps2.setString(1, ccNum);
+
+		rs = ps.executeQuery();
+		ResultSet rs2 = ps2.executeQuery();
 		
+		while(rs2.next()) {
+			
+			String fname = rs2.getString("first name");
+			String lname = rs2.getString("last name");
+
+			
+			System.out.print(fname + " " + lname + "\r\n" );
+		}
+		
+		while(rs.next()) {
+			
+			int wid = rs.getInt("id");
+			int wmonth = rs.getInt("Month");
+			int wday = rs.getInt("Day");
+			int wyear = rs.getInt("Year");
+			String type = rs.getString("type");
+			int transVal = rs.getInt("value");
+			
+
+			System.out.print(wid + " " + wmonth + " " + wday + " " + wyear + " " + type + " " + "$"+transVal + "\r\n" );
+		} 
+				
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			closeCon();
+			System.out.print("Query Complete!");
+		}
+		
+	}
+	
+	public void selectTrans24() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the customer ssn: ");
+		int ssNum = sc.nextInt();
+		System.out.println("Please enter the beginning month: ");
+		int bmonth = sc.nextInt();
+		System.out.println("Please enter the ending month: ");
+		int emonth = sc.nextInt();
+		System.out.println("Please enter the beginning day: ");
+		int bday = sc.nextInt();
+		System.out.println("Please enter the ending month: ");
+		int eday = sc.nextInt();
+	
+		openCon();
+		try {
+		ps = con.prepareStatement(Queries.select24);
+		ps.setInt(1, ssNum);
+		ps.setInt(2, bmonth);
+		ps.setInt(3, emonth);
+		ps.setInt(4, bday);
+		ps.setInt(5, eday);
+
+		rs = ps.executeQuery();
+		rsmd = rs.getMetaData();
+		String col1 = rsmd.getColumnName(4);
+		String col2 = rsmd.getColumnName(2);
+		String col3 = rsmd.getColumnName(1);
+		String col4 = rsmd.getColumnName(3);
+		String col5 = rsmd.getColumnName(5);
+		String col6 = rsmd.getColumnName(6);
+		String col7 = rsmd.getColumnName(8);
+		String col8 = rsmd.getColumnName(9);
+		String col9 = rsmd.getColumnName(7);
+		
+		System.out.print("  " + col1 + "     " + col2 + "    " + col3 + "  " + col4 + " " + col5 + " " +
+		" " + col6 + " " + col7 + " " + col8 + " " + col9 + "\r\n");
+		
+		while(rs.next()) {
+			
+			int wssn = rs.getInt("ssn");
+			int wmonth = rs.getInt("Month");
+			int wyear = rs.getInt("Year");
+			int wday = rs.getInt("Day");
+			String wcfname = rs.getString("first_name");
+			String wclname = rs.getString("last_name");
+			int transid = rs.getInt("id");
+			String transtyp = rs.getString("type");
+			int transval = rs.getInt("value");
+			
+			
+			System.out.print(wssn + "   " + wmonth + "      " + wyear + "   " + wday + "    " + wcfname + "       " + 
+			wclname + "       " +transid+ "          "+ transtyp+ "       " + "          $"+transval + " " + "\r\n");
+		} 
+				
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			closeCon();
+			System.out.print("Query Complete!");
+		}
+		
+	}
+	
+	
+	
 	public void selectStates() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		st = con.createStatement();
 		rs = st.executeQuery(Queries.selectStates);
@@ -325,6 +447,4 @@ public class CRUD extends DbCon {
 		}
 	}
 	
-	
-
 }

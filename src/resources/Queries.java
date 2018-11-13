@@ -33,7 +33,7 @@ public class Queries {
 			+ "GROUP BY CDW_SAPP_BRANCH.BRANCH_CODE "
 			+ "ORDER BY 2 ASC";
 	
-	public static String select12 = "SELECT CDW_SAPP_CUSTOMER.LAST_NAME AS 'Last Name',\n" + 
+	public static String select21 = "SELECT CDW_SAPP_CUSTOMER.LAST_NAME AS 'Last Name',\n" + 
 			"CDW_SAPP_CUSTOMER.FIRST_NAME AS 'First Name', \n" + 
 			"CDW_SAPP_CUSTOMER.MIDDLE_NAME AS 'Middle Name',\n" + 
 			"CDW_SAPP_CUSTOMER.CREDIT_CARD_NO AS 'CCN',\n" + 
@@ -49,6 +49,29 @@ public class Queries {
 			"FROM CDW_SAPP_CUSTOMER \n" + 
 			"WHERE SSN=? " + 
 			"ORDER BY 1 ASC";
+	
+	public static String select23 = "select cc.transaction_id as 'id', cc.month as 'Month', cc.day as Day, cc.year as 'Year', " +
+			"sum(cc.transaction_value) as 'Value', cc.transaction_type as 'Type' " +
+			" from cdw_sapp_customer c \n" + 
+			"join cdw_sapp_creditcard cc \n" + 
+			"on c.ssn=cc.cust_ssn \n" + 
+			"where cc.credit_card_no = ?  and cc.month = ? and cc.year = ? \n" + 
+			"group by id, type \n" + 
+			"order by id";
+	
+	public static String select24 = "select cc.year as year, cc.month as month, cc.day as day, c.ssn as ssn, c.first_name, c.last_name, \n" +
+	        "cc.transaction_value as value, \n " + 
+			"cc.transaction_id as id, cc.transaction_type as Type \n " + 
+			"from cdw_sapp_creditcard cc\n " + 
+			"join cdw_sapp_customer c\n " + 
+			"on c.ssn = cc.cust_ssn\n " + 
+			"where c.ssn = ? and (cc.month between ? and ?)\n " + 
+			"and (cc.day between ? and ?)\n " + 
+			"order by month, day desc";
+	
+	public static String showName = "SELECT c.first_name as 'First Name', c.last_name as 'Last Name'\n" + 
+			"FROM cdw_sapp_customer c\n" + 
+			"WHERE c.ssn = ( SELECT distinct cust_ssn FROM cdw_sapp_creditcard where credit_card_no =?)";
 	
 	public static String selectStates = "SELECT DISTINCT BRANCH_STATE as 'state' FROM CDW_SAPP_BRANCH ";
 	
