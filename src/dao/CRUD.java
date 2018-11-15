@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import resources.Queries;
 
@@ -34,15 +37,33 @@ public class CRUD extends DbCon {
 		}
 	}	
 	
-	public void selectTrans1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans1() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the zip code: ");
-		int zip = sc.nextInt();
-		System.out.println("Please enter the year in question: ");
-		int year = sc.nextInt();
-		System.out.println("Please enter the month in question: ");
-		int month = sc.nextInt();
+		int zip = 0;
+		int year = 0;
+		int month = 0;
+		
+		while(true) {
 			
+			try {
+				System.out.println("Please enter the 5-digit zip code: ");
+				zip = sc.nextInt();
+				String strZip = Integer.toString(zip);
+				if(!(strZip.matches("[0-9]{5}") || strZip.matches("[0-9]{4}"))) {
+					JOptionPane.showMessageDialog(null, "You must enter a number between 4 and 5 digits");
+					continue;
+				} break;
+				
+				} catch (InputMismatchException e) {
+					JOptionPane.showMessageDialog(null, "You must enter numbers only...");
+					sc.next();
+					continue;
+				}
+			
+				
+		}
+		
+		
 		openCon();
 		try {
 		ps = con.prepareStatement(Queries.select1);
@@ -51,7 +72,6 @@ public class CRUD extends DbCon {
 		ps.setInt(3, month);
 
 		rs = ps.executeQuery();
-		System.out.println("hello");
 	
 		while(rs.next()) {
 		
@@ -69,10 +89,11 @@ public class CRUD extends DbCon {
 		} catch(SQLException e) {
 			
 			e.printStackTrace();
+			
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("Query Complete! \n");
 		}
 		
 	}
@@ -80,18 +101,35 @@ public class CRUD extends DbCon {
 	
 	public void selectTrans2() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the type of transacton you would like to see: \r\n"
-				+ "1. Bills \r\n"
-				+ "2. Healthcare \r\n"
-				+ "3. Test \r\n"
-				+ "4. Education \r\n"
-				+ "5. Entertainment \r\n"
-				+ "6. Gas \r\n"
-				+ "7. Grocery");
+		int response;
 		
-		int response = sc.nextInt();
+		while(true) {
+			
+			try {
+				System.out.println("Please enter the type of transacton you would like to see: \r\n"
+						+ "1. Bills \r\n"
+						+ "2. Healthcare \r\n"
+						+ "3. Test \r\n"
+						+ "4. Education \r\n"
+						+ "5. Entertainment \r\n"
+						+ "6. Gas \r\n"
+						+ "7. Grocery");
+				
+				response = sc.nextInt();
+				String strRes = Integer.toString(response);
+				if(!(strRes.matches("[1-7]{1}"))) {
+					JOptionPane.showMessageDialog(null, "You must enter only one number between 1 and 7");
+					continue;
+				} break;
+				
+				} catch (InputMismatchException e) {
+					JOptionPane.showMessageDialog(null, "You must enter numbers only...");
+					sc.next();
+					continue;
+				}
+		}
+		
 		openCon();
-		
 		try {
 		ps = con.prepareStatement(Queries.select2);
 		switch(response) {
@@ -137,7 +175,6 @@ public class CRUD extends DbCon {
 		
 		rs = ps.executeQuery();
 
-	
 		while(rs.next()) {
 		
 			String type = rs.getString("Transaction Type");
@@ -146,28 +183,43 @@ public class CRUD extends DbCon {
 			
 			//Display values
 			System.out.print(type + " " + totVal + " " + amtOfTrans + "\r\n" );
-
 		} 
-		
 		
 		} catch(SQLException e) {
 			
 			e.printStackTrace();
+			
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("Query Complete!\n\n");
 		} 
 	}
 	
 	public void selectTrans3() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
 		Scanner sc = new Scanner(System.in);
-		openCon();
-		System.out.println("Here is a list of the available states: ");
-		this.selectStates();
-		System.out.println("\n\nPlease enter the state of the branch you'd like to see: \n");
-		String state = sc.next().toUpperCase();
+		String state;
+		
+		while(true) {
 			
+			try {
+				openCon();
+				System.out.println("Here is a list of the available states: ");
+				this.selectStates();
+				System.out.println("\n\nPlease enter the state of the branch you'd like to see: \n");
+				state = sc.next().toUpperCase();
+				
+				if(!(this.selectStates().equals(state))) {
+					JOptionPane.showMessageDialog(null, "You must enter a number between 4 and 5 digits");
+					continue;
+				} break;
+				
+				} catch (InputMismatchException e) {
+					JOptionPane.showMessageDialog(null, "You must enter numbers only...");
+					sc.next();
+					continue;
+				}		
+		}
 		
 		try {
 		ps = con.prepareStatement(Queries.select3);
@@ -308,7 +360,7 @@ public class CRUD extends DbCon {
 		int emonth = sc.nextInt();
 		System.out.println("Please enter the beginning day: ");
 		int bday = sc.nextInt();
-		System.out.println("Please enter the ending month: ");
+		System.out.println("Please enter the ending day: ");
 		int eday = sc.nextInt();
 	
 		openCon();
@@ -365,15 +417,17 @@ public class CRUD extends DbCon {
 	
 	
 	
-	public void selectStates() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+	public String selectStates() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		st = con.createStatement();
 		rs = st.executeQuery(Queries.selectStates);
 		while(rs.next()) {
 			String state = rs.getString("state");
 			System.out.print(state + ", ");
 		}
+		return null;
 		
 	}
+	
 	public void insert() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 		
 		openCon();

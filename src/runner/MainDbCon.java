@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MainDbCon {
 	
-	public static void transMenu() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, IOException {
+	public static void transMenu() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, IOException, InterruptedException {
 		System.out.println("Welcome to the Transaction Menu\n");
 		System.out.println("Please select from options below\n");
 
@@ -33,11 +33,9 @@ public class MainDbCon {
 			
 
 		default :
-			System.out.println("Invalid enter, please refresh the page\n");
+			System.out.println("Invalid entry, please refresh the page\n");
 		
 		}
-
-		
 		
 	}
 	
@@ -79,16 +77,7 @@ public class MainDbCon {
 		
 	}
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
-		
-		CRUD crud = new CRUD();
-//		TransactionDao trdao = new TransactionDao();
-//		CustomerRunner custrun = new CustomerRunner();
-//		TransactionRunnable trrun = new TransactionRunnable();
-//		
-//		System.out.println("If you wish details of transaction, press 1; if you wish details of customer, press 2: ");
-//		Scanner sc1 = new Scanner(System.in);
-//		int response1 = sc1.nextInt();
+	public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException {
 		
 	while(true) {	
 		System.out.println("Welcome to the Credit Card Management System:\n ");
@@ -96,8 +85,8 @@ public class MainDbCon {
 				+ "1. Transaction Detail \n"
 				+ "2. Customer detail\n ");
 	
-	Scanner sc1 = new Scanner(System.in);
-		int funcChoice = sc1.nextInt();
+	Scanner sc = new Scanner(System.in);
+		int funcChoice = sc.nextInt();
 		switch(funcChoice) {
 		
 		case 1:transMenu();
