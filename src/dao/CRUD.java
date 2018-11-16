@@ -1,12 +1,15 @@
 package dao;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -196,34 +199,39 @@ public class CRUD extends DbCon {
 		} 
 	}
 	
-	public void selectTrans3() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+		public void selectTrans3() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
 		Scanner sc = new Scanner(System.in);
-		String state;
+		String[] entry = new String[1]; 
+		String[] state = {"MN", "IL", "NY", "FL", "PA", "NJ", "CT", "OH", "MI", "KY", "MD", "WA",
+				"CA", "TX", "NC", "VA", "GA", "MT", "AR", "MS", "WI", "IN", "SC", "MA", "IA", "AL"};
+		boolean var = true;
 		
-		while(true) {
-			
-			try {
+		
+		while(var) {
+
 				openCon();
 				System.out.println("Here is a list of the available states: ");
 				this.selectStates();
 				System.out.println("\n\nPlease enter the state of the branch you'd like to see: \n");
-				state = sc.next().toUpperCase();
+				entry[0] = sc.nextLine().toUpperCase();
+				for(int i = 0; i < state.length; i++) {
+					if(entry[0].equals(state[i])) {
+						var=false;
+						break;
+					}		
+				} 
+				if (var == true) {
+				JOptionPane.showMessageDialog(null, "You must enter a valid state");
+				closeCon();
+				continue;	
 				
-				if(!(this.selectStates().equals(state))) {
-					JOptionPane.showMessageDialog(null, "You must enter a number between 4 and 5 digits");
-					continue;
-				} break;
-				
-				} catch (InputMismatchException e) {
-					JOptionPane.showMessageDialog(null, "You must enter numbers only...");
-					sc.next();
-					continue;
-				}		
+				}
 		}
+		
 		
 		try {
 		ps = con.prepareStatement(Queries.select3);
-		ps.setString(1, state);
+		ps.setString(1, entry[0]);
 
 		rs = ps.executeQuery();
 	
@@ -235,7 +243,7 @@ public class CRUD extends DbCon {
 			int amtOfTrans = rs.getInt("# of Transactions");
 			
 			//Display values
-			System.out.print(wstate + " " + branchCode + " " + totVal + " " + amtOfTrans + "\r\n" );
+			System.out.print(wstate + " " + branchCode + " " + totVal + " " + amtOfTrans + "\r\n\n" );
 		} 
 				
 		} catch(SQLException e) {
@@ -244,7 +252,7 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("Query Complete!\n\n");
 		}
 		
 	}
