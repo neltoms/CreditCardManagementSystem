@@ -1,7 +1,6 @@
 package resources;
 
 import dao.CRUD;
-import java.util.*;
 
 public class Queries {
 	
