@@ -1,18 +1,19 @@
 package resources;
 
 import dao.CRUD;
+import java.util.*;
 
 public class Queries {
 	
 	public static String select1 = "SELECT cu.first_name as 'First Name', cu.last_name as 'Last Name', c.cust_ssn AS ssn, c.TRANSACTION_ID AS 'Transaction ID', "
-			+ "b_zip AS 'zip_code', "
+			+ "branch_zip AS 'zip_code', "
 			+ "c.DAY AS 'Day', "
 			+ "c.MONTH AS 'Month', "
 			+ "c.YEAR AS 'Year' "
 			+ "FROM CDW_SAPP_branch "
 			+ "JOIN CDW_SAPP_creditcard c ON CDW_SAPP_BRANCH.BRANCH_CODE=c.BRANCH_CODE "
 			+ "join cdw_sapp_customer cu on cu.credit_card_no=c.credit_card_no "
-			+ "WHERE b_zip= ? and c.YEAR=? and c.MONTH=? "
+			+ "WHERE branch_zip= ? and c.YEAR=? and c.MONTH=? "
 			+ "ORDER BY Day DESC";
 	
 	public static String select2 = "SELECT CDW_SAPP_CREDITCARD.TRANSACTION_TYPE AS 'Transaction Type', "
@@ -59,15 +60,18 @@ public class Queries {
 			"group by id, type \n" + 
 			"order by id";
 	
-	public static String select24 = "select cc.year as year, cc.month as month, cc.day as day, c.ssn as ssn, c.first_name, c.last_name, \n" +
-	        "cc.transaction_value as value, \n " + 
-			"cc.transaction_id as id, cc.transaction_type as Type \n " + 
-			"from cdw_sapp_creditcard cc\n " + 
-			"join cdw_sapp_customer c\n " + 
-			"on c.ssn = cc.cust_ssn\n " + 
-			"where c.ssn = ? and (cc.month between ? and ?)\n " + 
-			"and (cc.day between ? and ?)\n " + 
-			"order by month, day desc";
+	public static String select24 = "SELECT select cc.year as year, cc.month as month, cc.day as day, \n" +
+			"cc.CUST_SSN AS SSN, c.first_name AS FirstName, c.last_name AS LastName, cc.transaction_value as Value, cc.transaction_id as ID, cc.transaction_type as Type \n" +
+			"from cdw_sapp_creditcard cc\n" +
+			"join cdw_sapp_customer c\n" +
+			"on c.ssn = cc.cust_ssn\n" +
+			"WHERE CUST_SSN=? AND\n" +
+			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))>= ? AND\n" +
+			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))<= ? \n" +
+			"ORDER BY year, month, day";
+	//this works in MySQL if I add the ?-s manually
+
+
 	
 	public static String showName = "SELECT c.first_name as 'First Name', c.last_name as 'Last Name'\n" + 
 			"FROM cdw_sapp_customer c\n" + 
@@ -75,7 +79,7 @@ public class Queries {
 	
 	public static String selectStates = "SELECT DISTINCT BRANCH_STATE as 'state' FROM CDW_SAPP_BRANCH ";
 	
-	public static String insert = "INSERT INTO CDW_SAPP_CUSTOMER VALUES ('Jaava', 'Liisa', 'Nanits', 123456780, '2001200220032002','2314', 'Valentine','Bronx','New York','USA',10458,'2038094299','jaava.nantis@gmail.com','2017-07-23')";
+	public static String insert = "INSERT INTO CDW_SAPP_CUSTOMER VALUES ('Jaava', 'Liisa', 'Nanits', 123456780, '2001200220032002','2314', 'Valentine','Bronx','New York','USA',10458,'2038094299','jaava.nanits@gmail.com','2017-07-23')";
 	
 	public static String update = "UPDATE cdw_sapp_customer SET " + CRUD.columnName + " = '" + CRUD.value + "' WHERE SSN = " + CRUD.ssn;
 	
