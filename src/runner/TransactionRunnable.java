@@ -10,7 +10,7 @@ import model.TransactionDao;
 
 public class TransactionRunnable extends DbCon {
 	
-	public void getTotalByType() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, SQLException {
+	public void getTotalByType() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, SQLException, InterruptedException {
 		
 		openCon();
 	    @SuppressWarnings("resource")
