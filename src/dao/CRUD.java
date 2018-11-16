@@ -259,7 +259,7 @@ public class CRUD extends DbCon {
 				ssn = sc.nextInt();
 				String ssnStr = Integer.toString(ssn);
 		
-				if(!(ssnStr.matches("{9}"))){
+				if(!(ssnStr.matches("[0-9]{9}"))){
 					JOptionPane.showMessageDialog(null, "A ssn must be 9 digits.\n");
 					continue;
 				} break;
@@ -370,26 +370,25 @@ public class CRUD extends DbCon {
 	
 	public void selectTrans24() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the customer ssn: ");
+
+		System.out.println("Please enter the customer ssn: ");//1
 		int ssNum = sc.nextInt();
-		System.out.println("Please enter the beginning month: ");
-		int bmonth = sc.nextInt();
-		System.out.println("Please enter the ending month: ");
-		int emonth = sc.nextInt();
-		System.out.println("Please enter the beginning day: ");
-		int bday = sc.nextInt();
-		System.out.println("Please enter the ending day: ");
-		int eday = sc.nextInt();
-	
+		System.out.println("Please enter the beginning date in format YYYYMMDD: "); //2
+		int bdate = sc.nextInt();//
+		System.out.println("Please enter the ending date in format YYYYMMDD: "); //3
+		int edate = sc.nextInt();//
+
+
 		openCon();
 		try {
+		if(bdate<edate) {
+
 		ps = con.prepareStatement(Queries.select24);
 		ps.setInt(1, ssNum);
-		ps.setInt(2, bmonth);
-		ps.setInt(3, emonth);
-		ps.setInt(4, bday);
-		ps.setInt(5, eday);
-
+		ps.setInt(2, bdate);
+		ps.setInt(3, edate);
+		
+		
 		rs = ps.executeQuery();
 		rsmd = rs.getMetaData();
 		String col1 = rsmd.getColumnName(4);
@@ -411,8 +410,8 @@ public class CRUD extends DbCon {
 			int wmonth = rs.getInt("Month");
 			int wyear = rs.getInt("Year");
 			int wday = rs.getInt("Day");
-			String wcfname = rs.getString("first_name");
-			String wclname = rs.getString("last_name");
+			String wcfname = rs.getString("firstName");
+			String wclname = rs.getString("lastName");
 			int transid = rs.getInt("id");
 			String transtyp = rs.getString("type");
 			int transval = rs.getInt("value");
@@ -421,7 +420,7 @@ public class CRUD extends DbCon {
 			System.out.print(wssn + "   " + wmonth + "      " + wyear + "   " + wday + "    " + wcfname + "       " + 
 			wclname + "       " +transid+ "          "+ transtyp+ "       " + "          $"+transval + " " + "\r\n");
 		} 
-				
+		}		
 		} catch(SQLException e) {
 			
 			e.printStackTrace();
