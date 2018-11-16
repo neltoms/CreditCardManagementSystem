@@ -1,15 +1,11 @@
 package dao;
 
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -22,7 +18,7 @@ public class CRUD extends DbCon {
 	public static String value;
 	public static int ssn;
 	
-	public void create() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+	public void create() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException {
 		
 		openCon();
 		try {
@@ -62,10 +58,7 @@ public class CRUD extends DbCon {
 					sc.next();
 					continue;
 				}
-			
-				
 		}
-		
 		
 		openCon();
 		try {
@@ -102,7 +95,7 @@ public class CRUD extends DbCon {
 	}
 	
 	
-	public void selectTrans2() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans2() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
 		int response;
 		
@@ -199,7 +192,7 @@ public class CRUD extends DbCon {
 		} 
 	}
 	
-		public void selectTrans3() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+		public void selectTrans3() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
 		String[] entry = new String[1]; 
 		String[] state = {"MN", "IL", "NY", "FL", "PA", "NJ", "CT", "OH", "MI", "KY", "MD", "WA",
@@ -210,7 +203,7 @@ public class CRUD extends DbCon {
 		while(var) {
 
 				openCon();
-				System.out.println("Here is a list of the available states: ");
+				System.out.println("Here is a list of the available states: \n");
 				this.selectStates();
 				System.out.println("\n\nPlease enter the state of the branch you'd like to see: \n");
 				entry[0] = sc.nextLine().toUpperCase();
@@ -222,7 +215,6 @@ public class CRUD extends DbCon {
 				} 
 				if (var == true) {
 				JOptionPane.showMessageDialog(null, "You must enter a valid state");
-				closeCon();
 				continue;	
 				
 				}
@@ -243,7 +235,7 @@ public class CRUD extends DbCon {
 			int amtOfTrans = rs.getInt("# of Transactions");
 			
 			//Display values
-			System.out.print(wstate + " " + branchCode + " " + totVal + " " + amtOfTrans + "\r\n\n" );
+			System.out.print(wstate + " " + branchCode + " " + totVal + " " + amtOfTrans + "\r\n" );
 		} 
 				
 		} catch(SQLException e) {
@@ -252,16 +244,34 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!\n\n");
+			System.out.print("\nQuery Complete!\n\n");
 		}
 		
 	}
 	
-	public void selectTrans21() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans21() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the customer's SSN : ");
-		int ssn = sc.nextInt();
-			
+		int ssn;
+		
+		while(true) {
+			try {
+				System.out.println("\nPlease enter the customer's SSN: ");
+				ssn = sc.nextInt();
+				String ssnStr = Integer.toString(ssn);
+		
+				if(!(ssnStr.matches("{9}"))){
+					JOptionPane.showMessageDialog(null, "A ssn must be 9 digits.\n");
+					continue;
+				} break;
+				
+			} catch(InputMismatchException e) {
+				JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+				sc.nextLine();
+				continue;
+			}
+		}	
+		
+		
 		openCon();
 		try {
 		ps = con.prepareStatement(Queries.select21);
@@ -298,13 +308,13 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("\nQuery Complete!\n\n");
 		}
 		
 	}
 
 	
-	public void selectTrans23() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans23() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the credit card number: ");
 		String ccNum = sc.next();
@@ -353,12 +363,12 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("\nQuery Complete!\n\n");
 		}
 		
 	}
 	
-	public void selectTrans24() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
+	public void selectTrans24() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the customer ssn: ");
 		int ssNum = sc.nextInt();
@@ -418,7 +428,7 @@ public class CRUD extends DbCon {
 		} finally {
 			
 			closeCon();
-			System.out.print("Query Complete!");
+			System.out.print("\nQuery Complete!\n\n");
 		}
 		
 	}
@@ -436,7 +446,7 @@ public class CRUD extends DbCon {
 		
 	}
 	
-	public void insert() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+	public void insert() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException {
 		
 		openCon();
 		try {
@@ -454,7 +464,7 @@ public class CRUD extends DbCon {
 		
 	}	
 	
-	public void update() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+	public void update() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException, InterruptedException {
 		
 		openCon();
 		

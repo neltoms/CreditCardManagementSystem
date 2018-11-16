@@ -40,7 +40,7 @@ public class MainDbCon {
 	}
 	
 	
-	public static void custMenu() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, IOException {
+	public static void custMenu() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, IOException, InterruptedException {
 		System.out.println("Welcome to the Customer Details Menu\n");
 		System.out.println("Please select from options below\n");
 		System.out.println("1. Check existing account details of a customer\n");
