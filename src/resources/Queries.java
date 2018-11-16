@@ -59,12 +59,12 @@ public class Queries {
 			"group by id, type \n" + 
 			"order by id";
 	
-	public static String select24 = "SELECT select cc.year as year, cc.month as month, cc.day as day, \n" +
+	public static String select24 = "SELECT cc.year as year, cc.month as month, cc.day as day, \n" +
 			"cc.CUST_SSN AS SSN, c.first_name AS FirstName, c.last_name AS LastName, cc.transaction_value as Value, cc.transaction_id as ID, cc.transaction_type as Type \n" +
-			"from cdw_sapp_creditcard cc\n" +
-			"join cdw_sapp_customer c\n" +
-			"on c.ssn = cc.cust_ssn\n" +
-			"WHERE CUST_SSN=? AND\n" +
+			"from cdw_sapp_creditcard cc\n " +
+			"join cdw_sapp_customer c\n " +
+			"on c.ssn = cc.cust_ssn\n " +
+			"WHERE CUST_SSN=? AND\n " +
 			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))>= ? AND\n" +
 			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))<= ? \n" +
 			"ORDER BY year, month, day";
