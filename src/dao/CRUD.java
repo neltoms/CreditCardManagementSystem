@@ -316,46 +316,74 @@ public class CRUD extends DbCon {
 	
 	public void selectTrans23() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
+		String ccNum = "";
+		int month;
+		int year;
+		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" +
+				"(?<mastercard>5[1-5][0-9]{14})|" +
+				"(?<discover>6(?:011|5[0-9]{2})[0-9]{12})|" +
+				"(?<amex>3[47][0-9]{13})|" +
+				"(?<diners>3(?:0[0-5]|[68][0-9])?[0-9]{11})|" +
+				"(?<jcb>(?:2131|1800|35[0-9]{3})[0-9]{11}))$";
+		
+		
+		
+	while(true) {	
 		System.out.println("Please enter the credit card number: ");
-		String ccNum = sc.next();
-		System.out.println("Please enter the month: ");
-		int month = sc.nextInt();
-		System.out.println("Please enter the year: ");
-		int year = sc.nextInt();
+		ccNum = sc.next();
+		if(!(ccNum.matches(regex))) {
 			
+			System.out.println("Please enter numbers only or be sure your card"
+					+ "is exactly 16 digits...\n\n");
+			//sc.next();
+			continue;
+		
+		} else {
+			System.out.println("Please enter the month: ");
+			month = sc.nextInt();
+			System.out.println("Please enter the year: ");
+			year = sc.nextInt();
+			break;
+		}
+	
+		
+	}
+	
+	
 		openCon();
 		try {
-		ps = con.prepareStatement(Queries.select23);
-		PreparedStatement ps2 = con.prepareStatement(Queries.showName);
-		ps.setString(1, ccNum);
-		ps.setInt(2, month);
-		ps.setInt(3, year);
-		ps2.setString(1, ccNum);
-
-		rs = ps.executeQuery();
-		ResultSet rs2 = ps2.executeQuery();
-		
-		while(rs2.next()) {
 			
-			String fname = rs2.getString("first name");
-			String lname = rs2.getString("last name");
-
+			ps = con.prepareStatement(Queries.select23);
+			PreparedStatement ps2 = con.prepareStatement(Queries.showName);
+			ps.setString(1, ccNum);
+			ps.setInt(2, month);
+			ps.setInt(3, year);
+			ps2.setString(1, ccNum);
+	
+			rs = ps.executeQuery();
+			ResultSet rs2 = ps2.executeQuery();
 			
-			System.out.print(fname + " " + lname + "\r\n" );
-		}
-		
-		while(rs.next()) {
+			while(rs2.next()) {
+				
+				String fname = rs2.getString("first name");
+				String lname = rs2.getString("last name");
+	
+				
+				System.out.print(fname + " " + lname + "\r\n" );
+			}
 			
-			int wid = rs.getInt("id");
-			int wmonth = rs.getInt("Month");
-			int wday = rs.getInt("Day");
-			int wyear = rs.getInt("Year");
-			String type = rs.getString("type");
-			int transVal = rs.getInt("value");
-			
-
-			System.out.print(wid + " " + wmonth + " " + wday + " " + wyear + " " + type + " " + "$"+transVal + "\r\n" );
-		} 
+			while(rs.next()) {
+				
+				int wid = rs.getInt("id");
+				int wmonth = rs.getInt("Month");
+				int wday = rs.getInt("Day");
+				int wyear = rs.getInt("Year");
+				String type = rs.getString("type");
+				int transVal = rs.getInt("value");
+				
+	
+				System.out.print(wid + " " + wmonth + " " + wday + " " + wyear + " " + type + " " + "$"+transVal + "\r\n" );
+			} 
 				
 		} catch(SQLException e) {
 			
