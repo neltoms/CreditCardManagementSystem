@@ -371,56 +371,110 @@ public class CRUD extends DbCon {
 	public void selectTrans24() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException, InterruptedException{
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Please enter the customer ssn: ");//1
-		int ssNum = sc.nextInt();
-		System.out.println("Please enter the beginning date in format YYYYMMDD: "); //2
-		int bdate = sc.nextInt();//
-		System.out.println("Please enter the ending date in format YYYYMMDD: "); //3
-		int edate = sc.nextInt();//
+		int ssNum;
+		int bdate;
+		int edate;
+		
+		while(true) {//1
+			try {
+				System.out.println("\nPlease enter the customer's SSN: ");
+				ssNum = sc.nextInt();
+				String ssnStr = Integer.toString(ssNum);
+		
+				if(!(ssnStr.matches("[0-9]{9}"))){
+					JOptionPane.showMessageDialog(null, "A ssn must be 9 digits.\n");
+					continue;
+				} break;
+				
+			} catch(InputMismatchException e) {
+				JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+				sc.nextLine();
+				continue;
+			}
+		}//1
+		
+		while(true) {//2
+			try {
+				System.out.println("\nPlease enter the beginning date in format YYYYMMDD: ");
+				bdate = sc.nextInt();
+				String bdateStr = Integer.toString(bdate);
+		
+				if(!(bdateStr.matches("[0-9]{8}"))){
+					JOptionPane.showMessageDialog(null, "An invalid date, please enter in format YYYYMMDD.\n");
+					continue;
+				} break;
+				
+			} catch(InputMismatchException e) {
+				JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+				sc.nextLine();
+				continue;
+			}
+		}//2
+		
+		while(true) {//3
+			try {
+				System.out.println("\nPlease enter the ending date in format YYYYMMDD: ");
+				edate = sc.nextInt();
+				String edateStr = Integer.toString(edate);
+		
+				if(!(edateStr.matches("[0-9]{8}"))){
+					JOptionPane.showMessageDialog(null, "An invalid date, please enter in format YYYYMMDD.\n");
+					continue;
+				} break;
+				
+			} catch(InputMismatchException e) {
+				JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+				sc.nextLine();
+				continue;
+			}
+		}//3
 
 
 		openCon();
 		try {
-		if(bdate<edate) {
-
-		ps = con.prepareStatement(Queries.select24);
-		ps.setInt(1, ssNum);
-		ps.setInt(2, bdate);
-		ps.setInt(3, edate);
+			if(bdate>edate) {
+				JOptionPane.showMessageDialog(null, "Enter dates from beginning to end.\n");
+				sc.nextLine();
+			}
+			else {
+				ps = con.prepareStatement(Queries.select24);
+				ps.setInt(1, ssNum);
+				ps.setInt(2, bdate);
+				ps.setInt(3, edate);
 		
 		
-		rs = ps.executeQuery();
-		rsmd = rs.getMetaData();
-		String col1 = rsmd.getColumnName(4);
-		String col2 = rsmd.getColumnName(2);
-		String col3 = rsmd.getColumnName(1);
-		String col4 = rsmd.getColumnName(3);
-		String col5 = rsmd.getColumnName(5);
-		String col6 = rsmd.getColumnName(6);
-		String col7 = rsmd.getColumnName(8);
-		String col8 = rsmd.getColumnName(9);
-		String col9 = rsmd.getColumnName(7);
+				rs = ps.executeQuery();
+				rsmd = rs.getMetaData();
+				String col1 = rsmd.getColumnName(4);
+				String col2 = rsmd.getColumnName(2);
+				String col3 = rsmd.getColumnName(1);
+				String col4 = rsmd.getColumnName(3);
+				String col5 = rsmd.getColumnName(5);
+				String col6 = rsmd.getColumnName(6);
+				String col7 = rsmd.getColumnName(8);
+				String col8 = rsmd.getColumnName(9);
+				String col9 = rsmd.getColumnName(7);
 		
-		System.out.print("  " + col1 + "     " + col2 + "    " + col3 + "  " + col4 + " " + col5 + " " +
-		" " + col6 + " " + col7 + " " + col8 + " " + col9 + "\r\n");
+				System.out.print("\t" + col1 + "\t" + col3 + "\t" + col2 + "\t" + col4 + "\t" + col5 + "\t" +
+				col6 + "\t" + col7 + "\t" + col8 + "\t" + col9 + "\r\n");
 		
-		while(rs.next()) {
+					while(rs.next()) {
 			
-			int wssn = rs.getInt("ssn");
-			int wmonth = rs.getInt("Month");
-			int wyear = rs.getInt("Year");
-			int wday = rs.getInt("Day");
-			String wcfname = rs.getString("firstName");
-			String wclname = rs.getString("lastName");
-			int transid = rs.getInt("id");
-			String transtyp = rs.getString("type");
-			int transval = rs.getInt("value");
-			
-			
-			System.out.print(wssn + "   " + wmonth + "      " + wyear + "   " + wday + "    " + wcfname + "       " + 
-			wclname + "       " +transid+ "          "+ transtyp+ "       " + "          $"+transval + " " + "\r\n");
-		} 
-		}		
+						int wssn = rs.getInt("ssn");
+						int wmonth = rs.getInt("Month");
+						int wyear = rs.getInt("Year");
+						int wday = rs.getInt("Day");
+						String wcfname = rs.getString("firstName");
+						String wclname = rs.getString("lastName");
+						int transid = rs.getInt("id");
+						String transtyp = rs.getString("type");
+						int transval = rs.getInt("value");
+						
+						
+						System.out.print("\t" + wssn + "\t" + wyear + "\t" + wmonth + "\t" + wday + "\t" + wcfname + "\t" + "\t" + 
+						wclname + "\t" +"\t" + transid+ "\t"+ "\t" + transtyp+ "\t" + "\t" + "\t" + "$"+transval + "\r\n");
+					} 
+				}		
 		} catch(SQLException e) {
 			
 			e.printStackTrace();
@@ -430,7 +484,7 @@ public class CRUD extends DbCon {
 			System.out.print("\nQuery Complete!\n\n");
 		}
 		
-	}
+}
 	
 	
 	
