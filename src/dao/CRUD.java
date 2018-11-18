@@ -329,24 +329,36 @@ public class CRUD extends DbCon {
 		
 		
 	while(true) {	
-		System.out.println("Please enter the credit card number: ");
+		System.out.println("Please enter the credit card number: \n");
 		ccNum = sc.next();
 		if(!(ccNum.matches(regex))) {
 			
 			System.out.println("Please enter numbers only or be sure your card"
 					+ "is exactly 16 digits...\n\n");
-			//sc.next();
 			continue;
 		
 		} else {
+			
+			while(true) {
 			System.out.println("Please enter the month: ");
 			month = sc.nextInt();
-			System.out.println("Please enter the year: ");
-			year = sc.nextInt();
+			String mStr = Integer.toString(month);
+			
+			if(!(mStr.matches("0[0-9][0-9]"))) {
+				
+				System.out.println("Please enter month in the MM format: \n");
+				continue;
+				
+			} else {
+				System.out.println("Please enter the year: ");
+				year = sc.nextInt();
+				break;
+				
+			}
+			
+			}
 			break;
 		}
-	
-		
 	}
 	
 	
