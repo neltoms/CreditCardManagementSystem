@@ -68,8 +68,7 @@ public class Queries {
 			"WHERE CUST_SSN=? AND\n " +
 			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))>= ? AND\n" +
 			"(CONCAT(LPAD(CONVERT(cc.YEAR, CHAR), 4, 0), LPAD(CONVERT(cc.MONTH, CHAR), 2, 0), LPAD(CONVERT(cc.DAY, CHAR), 2, 0)))<= ? \n" +
-			"ORDER BY year, month, day";
-	//this works in MySQL if I add the ?-s manually
+			"ORDER BY year, month, day ASC";
 
 
 	
