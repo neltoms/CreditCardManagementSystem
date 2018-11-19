@@ -6,14 +6,14 @@ import java.util.*;
 public class Queries {
 	
 	public static String select1 = "SELECT cu.first_name as 'First Name', cu.last_name as 'Last Name', c.cust_ssn AS ssn, c.TRANSACTION_ID AS 'Transaction ID', "
-			+ "branch_zip AS 'zip_code', "
+			+ "b_zip AS 'zip_code', "
 			+ "c.DAY AS 'Day', "
 			+ "c.MONTH AS 'Month', "
 			+ "c.YEAR AS 'Year' "
 			+ "FROM CDW_SAPP_branch "
 			+ "JOIN CDW_SAPP_creditcard c ON CDW_SAPP_BRANCH.BRANCH_CODE=c.BRANCH_CODE "
 			+ "join cdw_sapp_customer cu on cu.credit_card_no=c.credit_card_no "
-			+ "WHERE branch_zip= ? and c.YEAR=? and c.MONTH=? "
+			+ "WHERE b_zip= ? and c.YEAR=? and c.MONTH=? "
 			+ "ORDER BY Day DESC";
 	
 	public static String select2 = "SELECT CDW_SAPP_CREDITCARD.TRANSACTION_TYPE AS 'Transaction Type', "
