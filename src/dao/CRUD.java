@@ -328,38 +328,65 @@ public class CRUD extends DbCon {
 		
 		
 		
-	while(true) {	
-		System.out.println("Please enter the credit card number: \n");
+	while(true) {//1
+		try {
+		System.out.println("\nPlease enter the credit card number: \n");
 		ccNum = sc.next();
 		if(!(ccNum.matches(regex))) {
 			
-			System.out.println("Please enter numbers only or be sure your card"
+			JOptionPane.showMessageDialog(null, "Please enter numbers only or be sure your card"
 					+ "is exactly 16 digits...\n\n");
 			continue;
+		} break;
 		
-		} else {
-			
-			while(true) {
-			System.out.println("Please enter the month: ");
-			month = sc.nextInt();
-			String mStr = Integer.toString(month);
-			
-			if(!(mStr.matches("0[0-9][0-9]"))) {
-				
-				System.out.println("Please enter month in the MM format: \n");
-				continue;
-				
-			} else {
-				System.out.println("Please enter the year: ");
-				year = sc.nextInt();
-				break;
-				
-			}
-			
-			}
-			break;
+		} catch(InputMismatchException e) {
+			JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+			sc.nextInt();
+			continue;
 		}
-	}
+	}//1
+	
+	while(true) {//2
+		try {
+		System.out.println("\nPlease enter the month in format MM: \n");
+		month = sc.nextInt();
+		String mStr = Integer.toString(month);
+
+		if(!(mStr.matches("[0-9]{2}"))) {
+			JOptionPane.showMessageDialog(null, "An invalid month, please enter in format MM.\n");
+			continue;
+		} else if(!(month>=1 && month<=12)) {
+			JOptionPane.showMessageDialog(null, "An invalid month, please enter a month between 01-12.\n");
+			continue;
+		} break;
+		
+		} catch(InputMismatchException e) {
+			JOptionPane.showMessageDialog(null, "Please enter numbers only. \n");
+			sc.nextLine();
+			continue;
+		}
+	}//2
+		
+	while(true) {//3
+		try {
+			System.out.println("\nPlease enter the year in YYYY format: ");
+			year = sc.nextInt();
+			String yStr = Integer.toString(year);
+			
+			if(!(yStr.matches("[0-9]{4}"))) {
+				
+				JOptionPane.showMessageDialog(null, "An invalid date, please enter in format YYYY. \n");
+				continue;	
+			} break;
+			
+		}catch(InputMismatchException e) {
+				JOptionPane.showMessageDialog(null, "Please enter numbers only.\n");
+				sc.nextLine();
+				continue;
+			}
+			
+		}//3
+
 	
 	
 		openCon();
